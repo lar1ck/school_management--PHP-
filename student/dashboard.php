@@ -15,5 +15,5 @@ echo "<li><a href='view_marks.php' class='text-blue-500 hover:underline'>View Ma
 echo "</ul>";
 ?>
 <body>
-    <a href="../backend/login.php">logout</a>
+<a href="../backend/logout.php">logout</a>
 </body>

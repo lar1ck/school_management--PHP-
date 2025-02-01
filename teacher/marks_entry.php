@@ -59,4 +59,4 @@ $result_marks = mysqli_query($karine_conn, $sql_marks);
     <?php } ?>
     </tbody>
 </table>
-<a href="../backend/login.php">logout</a>
+<a href="../backend/logout.php">logout</a>

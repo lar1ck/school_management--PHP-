@@ -26,7 +26,7 @@ if (isset($_GET['student_id'])) {
     $student_info = mysqli_fetch_assoc(mysqli_query($karine_conn, "SELECT * FROM students WHERE student_id = '$student_id'"));
 }
 ?>
-    <a href="../backend/login.php">logout</a>
+<a href="../backend/logout.php">logout</a>
 
 <h1>View Students</h1>
 

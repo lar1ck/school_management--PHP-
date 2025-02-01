@@ -55,7 +55,7 @@ if (isset($_GET['delete'])) {
 $sql = "SELECT * FROM teachers";
 $result = mysqli_query($karine_conn, $sql);
 ?>
-
+<a href="../backend/logout.php">logout</a>
 <h1>Manage Teachers</h1>
 <!-- Add Teacher Form -->
 <form method="POST" class="mb-6">

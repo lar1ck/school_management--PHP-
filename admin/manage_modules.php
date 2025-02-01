@@ -66,7 +66,7 @@ $result = mysqli_query($karine_conn, $sql);
     <label for="is_active">Active</label><input type="checkbox" name="is_active" checked />
     <button type="submit" name="add_module" class="bg-blue-500 text-white p-2">Add Module</button>
 </form>
-<a href="../backend/login.php">logout</a>
+<a href="../backend/logout.php">logout</a>
 
 
 <!-- Edit Module Form (will populate on clicking 'Edit') -->

@@ -69,7 +69,7 @@ if (isset($_GET['delete'])) {
 $sql = "SELECT * FROM students";
 $result = mysqli_query($karine_conn, $sql);
 ?>
-
+<a href="../backend/logout.php">logout</a>
 <h1>Manage Students</h1>
 
 <!-- Add Student Form -->

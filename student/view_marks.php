@@ -27,5 +27,5 @@ $result = mysqli_query($karine_conn, $sql);
     <?php } ?>
     </tbody>
 </table>
-<a href="../backend/login.php">logout</a>
+<a href="../backend/logout.php">logout</a>
 
