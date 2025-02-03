@@ -1,30 +1,49 @@
-<?php
-// admin/manage_modules.php
-session_start();
-include_once('../backend/config.php');  // Include database connection
 
-// Ensure the user is an admin
+<?php
+session_start();
+include_once('../backend/config.php');  
+
 if ($_SESSION['user_type'] !== 'admin') {
-    header('Location: ../frontend/login.html');  // Redirect to login if not admin
+    header('Location: ../frontend/login.html');  
     exit();
 }
 
-// Handle Add Module
+
 if (isset($_POST['add_module'])) {
     $module_name = $_POST['module_name'];
     $description = $_POST['description'];
     $parent_module_id = $_POST['parent_module_id'] ?? NULL;
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
-    $sql = "INSERT INTO modules (module_name, description, parent_module_id, is_active) VALUES ('$module_name', '$description', '$parent_module_id', '$is_active')";
-    if (mysqli_query($karine_conn, $sql)) {
-        echo "Module added successfully!";
-    } else {
-        echo "Error: " . mysqli_error($karine_conn);
+    try {
+        $check_sql = "SELECT id FROM modules WHERE module_name = ?";
+        $stmt = $karine_conn->prepare($check_sql);
+        $stmt->bind_param("s", $module_name);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $error_message = "Error: A module with the name '$module_name' already exists.";
+        } else {
+            $insert_sql = "INSERT INTO modules (module_name, description, parent_module_id, is_active) VALUES (?, ?, ?, ?)";
+            $stmt = $karine_conn->prepare($insert_sql);
+            $stmt->bind_param("sssi", $module_name, $description, $parent_module_id, $is_active);
+
+            if ($stmt->execute()) {
+                $success_message = "Module added successfully!";
+            } else {
+                $error_message = "Error: " . $stmt->error;
+            }
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() === 1062) { 
+            $error_message = "Error: A module with the name '$module_name' already exists.";
+        } else {
+            $error_message = "Error: " . $e->getMessage();
+        }
     }
 }
 
-// Handle Edit Module
 if (isset($_POST['edit_module'])) {
     $id = $_POST['id'];
     $module_name = $_POST['module_name'];
@@ -32,15 +51,36 @@ if (isset($_POST['edit_module'])) {
     $parent_module_id = $_POST['parent_module_id'] ?? NULL;
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
-    $sql = "UPDATE modules SET module_name = '$module_name', description = '$description', parent_module_id = '$parent_module_id', is_active = '$is_active' WHERE id = '$id'";
-    if (mysqli_query($karine_conn, $sql)) {
-        echo "Module updated successfully!";
-    } else {
-        echo "Error: " . mysqli_error($karine_conn);
+    try {
+        $check_sql = "SELECT id FROM modules WHERE module_name = ? AND id != ?";
+        $stmt = $karine_conn->prepare($check_sql);
+        $stmt->bind_param("si", $module_name, $id);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $error_message = "Error: A module with the name '$module_name' already exists.";
+        } else {
+            $update_sql = "UPDATE modules SET module_name = ?, description = ?, parent_module_id = ?, is_active = ? WHERE id = ?";
+            $stmt = $karine_conn->prepare($update_sql);
+            $stmt->bind_param("sssii", $module_name, $description, $parent_module_id, $is_active, $id);
+
+            if ($stmt->execute()) {
+                $success_message = "Module updated successfully!";
+            } else {
+                $error_message = "Error: " . $stmt->error;
+            }
+        }
+    } catch (mysqli_sql_exception $e) {
+        
+        if ($e->getCode() === 1062) { 
+            $error_message = "Error: A module with the name '$module_name' already exists.";
+        } else {
+            $error_message = "Error: " . $e->getMessage();
+        }
     }
 }
 
-// Handle Delete Module
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $sql = "DELETE FROM modules WHERE id = '$id'";
@@ -51,64 +91,307 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// Fetch all modules for viewing
 $sql = "SELECT * FROM modules";
 $result = mysqli_query($karine_conn, $sql);
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Modules</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        a[href="../backend/logout.php"], 
+        button[onclick="window.history.back()"] {
+            position: fixed;
+            top: 1rem;
+            padding: 0.75rem 1.25rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            z-index: 100;
+        }
+
+        a[href="../backend/logout.php"] { right: 1rem; }
+        button[onclick="window.history.back()"] { left: 1rem; }
+
+        h1 {
+            font-weight: 300;
+            margin: 4rem 0 2rem;
+            text-align: center;
+            font-size: 2.25rem;
+        }
+
+        form {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        form h2 {
+            margin: 0 0 1.5rem;
+            font-weight: 400;
+            color: #7f8c8d;
+            font-size: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin: 1rem 0 0.5rem;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin: 0 0.5rem 0 0;
+        }
+
+        button[type="submit"] {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+        }
+
+        button[type="submit"]:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .status-active {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-inactive {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        td a {
+            color: #3498db;
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.25rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        td a:hover {
+            background: #f0f0f0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            form {
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+                margin: 3rem 0 1.5rem;
+            }
+        }
+        .message {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+
+<a href="dashboard.php">back to dashboard</a>
 
 <h1>Manage Modules</h1>
-<!-- Add Module Form -->
-<form method="POST" class="mb-6">
+<?php if (isset($success_message)): ?>
+    <div class="message success"><?php echo $success_message; ?></div>
+<?php endif; ?>
+
+<?php if (isset($error_message)): ?>
+    <div class="message error"><?php echo $error_message; ?></div>
+<?php endif; ?>
+
+<form method="POST">
     <h2>Add New Module</h2>
-    <label for="module_name">Module Name</label><input type="text" name="module_name" required class="border p-2" />
-    <label for="description">Description</label><textarea name="description" class="border p-2"></textarea>
-    <label for="parent_module_id">Parent Module (optional)</label><input type="text" name="parent_module_id" class="border p-2" />
-    <label for="is_active">Active</label><input type="checkbox" name="is_active" checked />
-    <button type="submit" name="add_module" class="bg-blue-500 text-white p-2">Add Module</button>
+    <label for="module_name">Module Name</label>
+    <input type="text" name="module_name" required>
+    
+    <label for="description">Description</label>
+    <textarea name="description" rows="4"></textarea>
+    
+    <label for="parent_module_id">Parent Module (optional)</label>
+    <select name="parent_module_id">
+        <option value="">-- Select Parent Module --</option>
+        <?php
+        $parentModules = mysqli_query($karine_conn, "SELECT id, module_name FROM modules WHERE parent_module_id IS NULL");
+        while ($module = mysqli_fetch_assoc($parentModules)) {
+            echo "<option value='{$module['id']}'>{$module['module_name']}</option>";
+        }
+        ?>
+    </select>
+    
+    <label>
+        <input type="checkbox" name="is_active" checked>
+        Active
+    </label>
+    
+    <button type="submit" name="add_module">Add Module</button>
 </form>
-<a href="../backend/logout.php">logout</a>
 
-
-<!-- Edit Module Form (will populate on clicking 'Edit') -->
-<?php
-if (isset($_GET['edit'])) {
+<?php if (isset($_GET['edit'])) { 
     $id = $_GET['edit'];
     $sql = "SELECT * FROM modules WHERE id = '$id'";
     $result = mysqli_query($karine_conn, $sql);
     $module = mysqli_fetch_assoc($result);
 ?>
-    <form method="POST" class="mb-6">
+    <form method="POST">
         <h2>Edit Module</h2>
-        <input type="hidden" name="id" value="<?php echo $module['id']; ?>" />
-        <label for="module_name">Module Name</label><input type="text" name="module_name" value="<?php echo $module['module_name']; ?>" required class="border p-2" />
-        <label for="description">Description</label><textarea name="description" class="border p-2"><?php echo $module['description']; ?></textarea>
-        <label for="parent_module_id">Parent Module</label><input type="text" name="parent_module_id" value="<?php echo $module['parent_module_id']; ?>" class="border p-2" />
-        <label for="is_active">Active</label><input type="checkbox" name="is_active" <?php echo $module['is_active'] ? 'checked' : ''; ?> />
-        <button type="submit" name="edit_module" class="bg-blue-500 text-white p-2">Update Module</button>
+        <input type="hidden" name="id" value="<?php echo $module['id']; ?>">
+        
+        <label for="module_name">Module Name</label>
+        <input type="text" name="module_name" value="<?php echo $module['module_name']; ?>" required>
+        
+        <label for="description">Description</label>
+        <textarea name="description" rows="4"><?php echo $module['description']; ?></textarea>
+        
+        <label for="parent_module_id">Parent Module</label>
+        <select name="parent_module_id">
+            <option value="">-- Select Parent Module --</option>
+            <?php
+            $parentModules = mysqli_query($karine_conn, "SELECT id, module_name FROM modules WHERE parent_module_id IS NULL AND id != {$module['id']}");
+            while ($parent = mysqli_fetch_assoc($parentModules)) {
+                $selected = $parent['id'] == $module['parent_module_id'] ? 'selected' : '';
+                echo "<option value='{$parent['id']}' $selected>{$parent['module_name']}</option>";
+            }
+            ?>
+        </select>
+        
+        <label>
+            <input type="checkbox" name="is_active" <?php echo $module['is_active'] ? 'checked' : ''; ?>>
+            Active
+        </label>
+        
+        <button type="submit" name="edit_module">Update Module</button>
     </form>
-    <a href="../backend/login.php">logout</a>
+<?php } ?>
 
-<?php
-}
-?>
-
-<!-- Display all modules -->
-<table class="min-w-full table-auto mt-4">
-    <thead><tr><th>ID</th><th>Module Name</th><th>Description</th><th>Active</th><th>Actions</th></tr></thead>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Module Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
     <tbody>
-    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+    <?php 
+    mysqli_data_seek($result, 0); 
+    while ($row = mysqli_fetch_assoc($result)) { 
+        $statusClass = $row['is_active'] ? 'status-active' : 'status-inactive';
+        $statusText = $row['is_active'] ? 'Active' : 'Inactive';
+    ?>
         <tr>
             <td><?php echo $row['id']; ?></td>
             <td><?php echo $row['module_name']; ?></td>
             <td><?php echo $row['description']; ?></td>
-            <td><?php echo $row['is_active'] ? 'Yes' : 'No'; ?></td>
+            <td><span class="status <?php echo $statusClass; ?>"><?php echo $statusText; ?></span></td>
             <td>
-                <a href="?edit=<?php echo $row['id']; ?>" class="text-blue-500 hover:underline">Edit</a> |
-                <a href="?delete=<?php echo $row['id']; ?>" class="text-red-500 hover:underline">Delete</a>
+                <a href="?edit=<?php echo $row['id']; ?>">Edit</a> 
+                <!-- | -->
+                <!-- <a href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure?')">Delete</a> -->
             </td>
         </tr>
     <?php } ?>
     </tbody>
-    
 </table>
-<a href="../backend/login.php">logout</a>
+
+<a href="../backend/logout.php">Logout</a>
+
+</body>
+</html>

@@ -1,16 +1,12 @@
 <?php
-// backend/register.php
 session_start();
-include_once('../backend/config.php');  // Include database connection
+include_once('../backend/config.php');  
 
-// Check if form data is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize and collect form data
     $role = mysqli_real_escape_string($karine_conn, $_POST['role']);
     $email = mysqli_real_escape_string($karine_conn, $_POST['email']);
     $password = mysqli_real_escape_string($karine_conn, $_POST['password']);
 
-    // Check if email already exists in the selected role table
     if ($role == 'admin') {
         $sql = "SELECT * FROM admins WHERE username = '$email'";
     } elseif ($role == 'teacher') {
@@ -21,9 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $result = mysqli_query($karine_conn, $sql);
 
-    // If email exists, redirect to the appropriate dashboard
     if (mysqli_num_rows($result) > 0) {
-        // Start session and set role-based redirection
         $_SESSION['role'] = $role;
         $_SESSION['email'] = $email;
         if ($role == 'admin') {
@@ -35,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         exit();
     } else {
-        // If email does not exist, register the user
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         if ($role == 'admin') {
@@ -47,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if (mysqli_query($karine_conn, $sql)) {
-            // Redirect to the respective dashboard after registration
             $_SESSION['role'] = $role;
             $_SESSION['email'] = $email;
             if ($role == 'admin') {
@@ -86,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <br><br>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" required placeholder="Enter your email">
+        <label for="email">ID:</label>
+        <input type="text" name="email" required placeholder="Enter your ID">
 
         <br><br>
 
