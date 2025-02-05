@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($role == 'admin') {
         $query = "SELECT * FROM ShyakCarrick_tbladmins WHERE username = '$username'";
-        $result = mysqli_query($carrick_conn, $query);
+        $result = mysqli_query($happy_conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } elseif ($role == 'teacher') {
         $query = "SELECT * FROM ShyakCarrick_tblteachers WHERE username = '$username'";
-        $result = mysqli_query($carrick_conn, $query);
+        $result = mysqli_query($happy_conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $teacher = mysqli_fetch_assoc($result);
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } elseif ($role == 'student') {
         $query = "SELECT * FROM ShyakCarrick_tblstudents WHERE student_id = '$username'";
-        $result = mysqli_query($carrick_conn, $query);
+        $result = mysqli_query($happy_conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);

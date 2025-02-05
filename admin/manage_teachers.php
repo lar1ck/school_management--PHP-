@@ -10,7 +10,7 @@ if ($_SESSION['user_type'] !== 'admin') {
 
 // Fetch all active modules from the modules table
 $sql_modules = "SELECT * FROM ShyakCarrick_tblmodules WHERE is_active = 1";
-$result_modules = mysqli_query($carrick_conn, $sql_modules);
+$result_modules = mysqli_query($happy_conn, $sql_modules);
 
 if (isset($_POST['add_teacher'])) {
     $name = $_POST['name'];
@@ -20,10 +20,10 @@ if (isset($_POST['add_teacher'])) {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO ShyakCarrick_tblteachers (name, subject, username, password) VALUES ('$name', '$subject', '$username', '$password')";
-    if (mysqli_query($carrick_conn, $sql)) {
+    if (mysqli_query($happy_conn, $sql)) {
         echo "Teacher added successfully!";
     } else {
-        echo "Error: " . mysqli_error($carrick_conn);
+        echo "Error: " . mysqli_error($happy_conn);
     }
 }
 
@@ -42,25 +42,25 @@ if (isset($_POST['edit_teacher'])) {
         $sql = "UPDATE ShyakCarrick_tblteachers SET name = '$name', subject = '$subject', username = '$username' WHERE id = '$id'";
     }
     
-    if (mysqli_query($carrick_conn, $sql)) {
+    if (mysqli_query($happy_conn, $sql)) {
         echo "Teacher updated successfully!";
     } else {
-        echo "Error: " . mysqli_error($carrick_conn);
+        echo "Error: " . mysqli_error($happy_conn);
     }
 }
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $sql = "DELETE FROM ShyakCarrick_tblteachers WHERE id = '$id'";
-    if (mysqli_query($carrick_conn, $sql)) {
+    if (mysqli_query($happy_conn, $sql)) {
         echo "Teacher deleted successfully!";
     } else {
-        echo "Error: " . mysqli_error($carrick_conn);
+        echo "Error: " . mysqli_error($happy_conn);
     }
 }
 
 $sql = "SELECT * FROM ShyakCarrick_tblteachers";
-$result = mysqli_query($carrick_conn, $sql);
+$result = mysqli_query($happy_conn, $sql);
 ?>
 
 <div class="management-section">
@@ -204,7 +204,7 @@ $result = mysqli_query($carrick_conn, $sql);
   if (isset($_GET['edit'])) {
       $id = $_GET['edit'];
       $sql = "SELECT * FROM ShyakCarrick_tblteachers WHERE id = '$id'";
-      $resultEdit = mysqli_query($carrick_conn, $sql);
+      $resultEdit = mysqli_query($happy_conn, $sql);
       $teacher = mysqli_fetch_assoc($resultEdit);
       if (!$teacher) {
           echo "Teacher not found.";
@@ -222,7 +222,7 @@ $result = mysqli_query($carrick_conn, $sql);
         <option value="">Select Module</option>
         <?php 
         // Reuse the same modules result; if needed, re-query for fresh result
-        $result_modules = mysqli_query($carrick_conn, $sql_modules);
+        $result_modules = mysqli_query($happy_conn, $sql_modules);
         while ($module = mysqli_fetch_assoc($result_modules)) { ?>
           <option value="<?php echo $module['module_name']; ?>" <?php if($teacher['subject'] == $module['module_name']) echo 'selected'; ?>>
             <?php echo $module['module_name']; ?>

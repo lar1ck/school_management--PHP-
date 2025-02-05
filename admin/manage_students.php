@@ -37,7 +37,7 @@ if (isset($_POST['add_student'])) {
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $carrick_conn->prepare("INSERT INTO ShyakCarrick_tblstudents (name, student_id, class, other_details, password) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $happy_conn->prepare("INSERT INTO ShyakCarrick_tblstudents (name, student_id, class, other_details, password) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $name, $student_id, $class, $other_details, $hashed_password);
 
     if ($stmt->execute()) {
@@ -58,10 +58,10 @@ if (isset($_POST['edit_student'])) {
 
     if (!empty($password)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $carrick_conn->prepare("UPDATE ShyakCarrick_tblstudents SET name=?, student_id=?, class=?, other_details=?, password=? WHERE id=?");
+        $stmt = $happy_conn->prepare("UPDATE ShyakCarrick_tblstudents SET name=?, student_id=?, class=?, other_details=?, password=? WHERE id=?");
         $stmt->bind_param("sssssi", $name, $student_id, $class, $other_details, $hashed_password, $id);
     } else {
-      $stmt = $carrick_conn->prepare("UPDATE ShyakCarrick_tblstudents SET name=?, student_id=?, class=?, other_details=? WHERE id=?");
+      $stmt = $happy_conn->prepare("UPDATE ShyakCarrick_tblstudents SET name=?, student_id=?, class=?, other_details=? WHERE id=?");
         $stmt->bind_param("ssssi", $name, $student_id, $class, $other_details, $id);
     }
 
@@ -76,7 +76,7 @@ if (isset($_POST['edit_student'])) {
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     
-    $stmt = $carrick_conn->prepare("DELETE FROM ShyakCarrick_tblstudents WHERE id = ?");
+    $stmt = $happy_conn->prepare("DELETE FROM ShyakCarrick_tblstudents WHERE id = ?");
     $stmt->bind_param("i", $id);
     
     if ($stmt->execute()) {
@@ -87,7 +87,7 @@ if (isset($_GET['delete'])) {
     }
 }
 $sql = "SELECT * FROM ShyakCarrick_tblstudents";
-$result = mysqli_query($carrick_conn, $sql);
+$result = mysqli_query($happy_conn, $sql);
 ?>
 
 <div class="management-section">
@@ -210,7 +210,7 @@ $result = mysqli_query($carrick_conn, $sql);
     <input type="text" name="name" required>
     
     <label>Student ID</label>
-    <input type="text" name="student_id" value="<?php echo generate_student_id($carrick_conn); ?>" readonly required>
+    <input type="text" name="student_id" value="<?php echo generate_student_id($happy_conn); ?>" readonly required>
     
     <label>Class</label>
     <input type="text" name="class" required>
@@ -227,7 +227,7 @@ $result = mysqli_query($carrick_conn, $sql);
   <?php 
   if (isset($_GET['edit'])) {
       $id = $_GET['edit'];
-      $stmt = $carrick_conn->prepare("SELECT * FROM ShyakCarrick_tblstudents WHERE id = ?");
+      $stmt = $happy_conn->prepare("SELECT * FROM ShyakCarrick_tblstudents WHERE id = ?");
       $stmt->bind_param("i", $id);
       $stmt->execute();
       $student = $stmt->get_result()->fetch_assoc();

@@ -8,7 +8,7 @@ if ($_SESSION['user_type'] !== 'student') {
 }
 
 $sql = "SELECT * FROM ShyakCarrick_tblmarks WHERE student_id = '{$_SESSION['student_id']}'";
-$result = mysqli_query($carrick_conn, $sql);
+$result = mysqli_query($happy_conn, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">

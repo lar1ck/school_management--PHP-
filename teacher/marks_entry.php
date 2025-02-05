@@ -12,11 +12,11 @@ if ($_SESSION['user_type'] !== 'teacher') {
 $teacher_id = $_SESSION['user_id'];
 
 $sql_teacher = "SELECT * FROM ShyakCarrick_tblteachers WHERE id = '$teacher_id'";
-$result_teacher = mysqli_query($carrick_conn, $sql_teacher);
+$result_teacher = mysqli_query($happy_conn, $sql_teacher);
 $teacher_data = mysqli_fetch_assoc($result_teacher);
 
 $sql_marks = "SELECT * FROM ShyakCarrick_tblmarks WHERE teacher_id = '$teacher_id' ORDER BY entry_date DESC";
-$result_marks = mysqli_query($carrick_conn, $sql_marks);
+$result_marks = mysqli_query($happy_conn, $sql_marks);
 ?>
 
 <style>

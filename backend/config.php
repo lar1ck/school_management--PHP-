@@ -4,11 +4,11 @@
 $servername = "localhost"; 
 $username = "root";        
 $password = "";            
-$dbname = "student_marks_db"; 
+$dbname = "happy_db"; 
 
-$carrick_conn = mysqli_connect($servername, $username, $password, $dbname);
+$happy_conn = mysqli_connect($servername, $username, $password, $dbname);
 
-if (!$carrick_conn) {
+if (!$happy_conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 ?>
