@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h1>
 
         <?php if (isset($error_message)) { ?>
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded-md">
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded-md rounded-l-none">
                 <p><?php echo htmlspecialchars($error_message); ?></p>
             </div>
         <?php } ?>
