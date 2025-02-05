@@ -1,15 +1,14 @@
-
 <?php
 session_start();
 include_once('../backend/config.php');  
 
 if ($_SESSION['user_type'] !== 'student') {
-    header('Location: ../frontend/login.html');  
+    header('Location: ../backend/login.php');  
     exit();
 }
 
-$sql = "SELECT * FROM marks WHERE student_id = '{$_SESSION['student_id']}'";
-$result = mysqli_query($karine_conn, $sql);
+$sql = "SELECT * FROM ShyakCarrick_tblmarks WHERE student_id = '{$_SESSION['student_id']}'";
+$result = mysqli_query($carrick_conn, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,17 +22,6 @@ $result = mysqli_query($karine_conn, $sql);
     <button onclick="window.history.back()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 mb-6">
         Go Back
     </button>
-
-    <?php
-
-    if ($_SESSION['user_type'] !== 'student') {
-        header('Location: ../frontend/login.html');  
-        exit();
-    }
-
-    $sql = "SELECT * FROM marks WHERE student_id = '{$_SESSION['student_id']}'";
-    $result = mysqli_query($karine_conn, $sql);
-    ?>
 
     <h1 class="text-3xl font-bold text-gray-800 mb-6">Your Marks</h1>
 

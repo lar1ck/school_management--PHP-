@@ -10,8 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     if ($role == 'admin') {
-        $query = "SELECT * FROM admins WHERE username = '$username'";
-        $result = mysqli_query($karine_conn, $query);
+        $query = "SELECT * FROM ShyakCarrick_tbladmins WHERE username = '$username'";
+        $result = mysqli_query($carrick_conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
@@ -23,13 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     } elseif ($role == 'teacher') {
-        $query = "SELECT * FROM teachers WHERE username = '$username'";
-        $result = mysqli_query($karine_conn, $query);
+        $query = "SELECT * FROM ShyakCarrick_tblteachers WHERE username = '$username'";
+        $result = mysqli_query($carrick_conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $teacher = mysqli_fetch_assoc($result);
             if (password_verify($password, $teacher['password'])) {
-                // Teacher login
                 $_SESSION['user_type'] = 'teacher';
                 $_SESSION['username'] = $username;
                 $_SESSION['user_id'] = $teacher['id'];
@@ -38,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     } elseif ($role == 'student') {
-        $query = "SELECT * FROM students WHERE student_id = '$username'";
-        $result = mysqli_query($karine_conn, $query);
+        $query = "SELECT * FROM ShyakCarrick_tblstudents WHERE student_id = '$username'";
+        $result = mysqli_query($carrick_conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
@@ -94,7 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit">Login</button>
             </form>
             
-            <!-- <p class="new-one">Don't have an account? <a href="./register.php">Register</a></p> -->
         </div>
     </div>
 </body>

@@ -6,9 +6,9 @@ $username = "root";
 $password = "";            
 $dbname = "student_marks_db"; 
 
-$karine_conn = mysqli_connect($servername, $username, $password, $dbname);
+$carrick_conn = mysqli_connect($servername, $username, $password, $dbname);
 
-if (!$karine_conn) {
+if (!$carrick_conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 ?>
