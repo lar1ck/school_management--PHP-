@@ -3,19 +3,19 @@ session_start();
 include_once('../backend/config.php');  
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $role = mysqli_real_escape_string($karine_conn, $_POST['role']);
-    $email = mysqli_real_escape_string($karine_conn, $_POST['email']);
-    $password = mysqli_real_escape_string($karine_conn, $_POST['password']);
+    $role = mysqli_real_escape_string($carrick_conn, $_POST['role']);
+    $email = mysqli_real_escape_string($carrick_conn, $_POST['email']);
+    $password = mysqli_real_escape_string($carrick_conn, $_POST['password']);
 
     if ($role == 'admin') {
-        $sql = "SELECT * FROM admins WHERE username = '$email'";
+        $sql = "SELECT * FROM ShyakCarrick_tbladmins WHERE username = '$email'";
     } elseif ($role == 'teacher') {
-        $sql = "SELECT * FROM teachers WHERE username = '$email'";
+        $sql = "SELECT * FROM ShyakCarrick_tblteachers WHERE username = '$email'";
     } elseif ($role == 'student') {
-        $sql = "SELECT * FROM students WHERE student_id = '$email'";
+        $sql = "SELECT * FROM ShyakCarrick_tblstudents WHERE student_id = '$email'";
     }
 
-    $result = mysqli_query($karine_conn, $sql);
+    $result = mysqli_query($carrick_conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
         $_SESSION['role'] = $role;
@@ -29,17 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         exit();
     } else {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
         if ($role == 'admin') {
-            $sql = "INSERT INTO admins (username, password) VALUES ('$email', '$hashed_password')";
+            $sql = "INSERT INTO ShyakCarrick_tbladmins (username, password) VALUES ('$email', '$hashed_password')";
         } elseif ($role == 'teacher') {
-            $sql = "INSERT INTO teachers (username, password) VALUES ('$email', '$hashed_password')";
+            $sql = "INSERT INTO ShyakCarrick_tblteachers (username, password) VALUES ('$email', '$hashed_password')";
         } elseif ($role == 'student') {
-            $sql = "INSERT INTO students (student_id, password) VALUES ('$email', '$hashed_password')";
+            $sql = "INSERT INTO ShyakCarrick_tblstudents (student_id, password) VALUES ('$email', '$hashed_password')";
         }
 
-        if (mysqli_query($karine_conn, $sql)) {
+        if (mysqli_query($carrick_conn, $sql)) {
             $_SESSION['role'] = $role;
             $_SESSION['email'] = $email;
             if ($role == 'admin') {
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             exit();
         } else {
-            echo "Error: " . mysqli_error($karine_conn);
+            echo "Error: " . mysqli_error($carrick_conn);
         }
     }
 }
@@ -67,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <h2>Register</h2>
 
-    <!-- Form to Register a User -->
     <form action="register.php" method="POST">
         <label for="role">Select Role:</label>
         <select name="role" required>

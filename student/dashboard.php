@@ -6,6 +6,9 @@ if ($_SESSION['user_type'] !== 'student') {
     header('Location: ../backend/login.php');
     exit();
 }
+
+$sql = "SELECT * FROM ShyakCarrick_tblmarks WHERE student_id = '{$_SESSION['student_id']}'";
+$result = mysqli_query($carrick_conn, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -13,32 +16,56 @@ if ($_SESSION['user_type'] !== 'student') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Student Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Arial', sans-serif; }
+        .nav-item { transition: all 0.3s ease-in-out; }
+        .nav-item:hover { background-color: #4A90E2; color: white; }
+        .active { background-color: #4A90E2; color: white; }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <nav class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <button onclick="window.history.back()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300">
-                Go Back
-            </button>
-            <a href="../backend/logout.php" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
-                Logout
-            </a>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center">
+    <nav class="bg-white shadow-md w-full p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-semibold text-gray-800">Student Portal</h1>
+        <div>
+            <a href="?page=dashboard" class="nav-item px-4 py-2 rounded-md">Dashboard</a>
+            <a href="?page=view_marks" class="nav-item px-4 py-2 rounded-md">View Marks</a>
+            <a href="../backend/logout.php" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Logout</a>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">Welcome, Student!</h1>
-            
-            <div class="space-y-4">
-                <a href='view_marks.php' class="block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 text-center">
-                    View Your Marks
-                </a>
-                
+    <main class="w-full max-w-4xl p-6">
+        <?php if (!isset($_GET['page']) || $_GET['page'] == 'dashboard') { ?>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-3xl font-bold text-gray-700 mb-4">Welcome, Student!</h2>
+                <p class="text-gray-600">Access your marks and academic details here.</p>
             </div>
-        </div>
+        <?php } elseif ($_GET['page'] == 'view_marks') { ?>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-3xl font-bold text-gray-700 mb-4">Your Marks</h2>
+                <div class="overflow-hidden rounded-lg border border-gray-200">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-gray-100 border-b">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Subject</th>
+                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Marks</th>
+                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-sm text-gray-700"><?php echo $row['subject']; ?></td>
+                                    <td class="px-6 py-4 text-sm text-gray-700"><?php echo $row['marks']; ?></td>
+                                    <td class="px-6 py-4 text-sm text-gray-700"><?php echo $row['entry_date']; ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php } ?>
     </main>
 </body>
 </html>
