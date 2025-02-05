@@ -1,21 +1,22 @@
 <?php
-
-
 session_start();
-include_once('../backend/config.php');  
+include_once('../backend/config.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $role = $_POST['role'];  
+    $role = $_POST['role'];
     $username = $_POST['username'];
     $password = $_POST['password'];
 
     if ($role == 'admin') {
-        $query = "SELECT * FROM ShyakCarrick_tbladmins WHERE username = '$username'";
-        $result = mysqli_query($happy_conn, $query);
+        $query = "SELECT * FROM happy__tbladmins WHERE username = ?";
+        $stmt = mysqli_prepare($happy_conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-        if (mysqli_num_rows($result) > 0) {
-            $user = mysqli_fetch_assoc($result);
+        if ($user = mysqli_fetch_assoc($result)) {
             if (password_verify($password, $user['password'])) {
+                session_regenerate_id(true);
                 $_SESSION['user_type'] = 'admin';
                 $_SESSION['username'] = $username;
                 header("Location: ../admin/dashboard.php");
@@ -23,12 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     } elseif ($role == 'teacher') {
-        $query = "SELECT * FROM ShyakCarrick_tblteachers WHERE username = '$username'";
-        $result = mysqli_query($happy_conn, $query);
+        $query = "SELECT * FROM happy__tblteachers WHERE username = ?";
+        $stmt = mysqli_prepare($happy_conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-        if (mysqli_num_rows($result) > 0) {
-            $teacher = mysqli_fetch_assoc($result);
+        if ($teacher = mysqli_fetch_assoc($result)) {
             if (password_verify($password, $teacher['password'])) {
+                session_regenerate_id(true);
                 $_SESSION['user_type'] = 'teacher';
                 $_SESSION['username'] = $username;
                 $_SESSION['user_id'] = $teacher['id'];
@@ -37,13 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     } elseif ($role == 'student') {
-        $query = "SELECT * FROM ShyakCarrick_tblstudents WHERE student_id = '$username'";
-        $result = mysqli_query($happy_conn, $query);
+        $query = "SELECT * FROM happy__tblstudents WHERE student_id = ?";
+        $stmt = mysqli_prepare($happy_conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-        if (mysqli_num_rows($result) > 0) {
-            $user = mysqli_fetch_assoc($result);
+        if ($user = mysqli_fetch_assoc($result)) {
             if (password_verify($password, $user['password'])) {
-                // Student login
+                session_regenerate_id(true);
                 $_SESSION['user_type'] = 'student';
                 $_SESSION['student_id'] = $username;
                 header("Location: ../student/dashboard.php");
@@ -58,42 +64,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="login.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="parent-div">
-        <div class="image-div">
-    
-        </div>
-        <div class="content-div">
-            <h1>Login</h1> <br>
-            
-            <?php if (isset($error_message)) { ?>
-                <p class="error"><?php echo $error_message; ?></p>
-            <?php } ?>
-            
-            <form action="login.php" method="POST">
-                <select name="role" class="select-input" required>
-                    <div class="mm">
-                        <option value="" disabled selected>Select your role</option>
-                        <option value="admin">Admin</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="student">Student</option>
-                    </div>
-                </select> <br>
-                
-                <input type="text" name="username" placeholder="Username" class="text-input" required><br>
-                
-                <input type="password" name="password" placeholder="Password" class="text-input last" required><br>
-                
-                <button type="submit">Login</button>
-            </form>
-            
-        </div>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white border border-border rounded-lg p-8 w-96">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h1>
+
+        <?php if (isset($error_message)) { ?>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded-md">
+                <p><?php echo htmlspecialchars($error_message); ?></p>
+            </div>
+        <?php } ?>
+
+        <form action="login.php" method="POST" class="space-y-4">
+            <!-- User Role -->
+            <div>
+                <label class="block font-semibold text-gray-700 mb-1" for="role">User Role</label>
+                <select name="role" class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 outline-none" required>
+                    <option value="" disabled selected>Select your role</option>
+                    <option value="admin">Admin</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+
+            <!-- Username -->
+            <div>
+                <label class="block font-semibold text-gray-700 mb-1" for="username">Username</label>
+                <input type="text" name="username" placeholder="Enter your username"
+                    class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 outline-none" required>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label class="block font-semibold text-gray-700 mb-1" for="password">Password</label>
+                <input type="password" name="password" placeholder="Enter your password"
+                    class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 outline-none" required>
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200">
+                Login
+            </button>
+        </form>
     </div>
 </body>
+
 </html>

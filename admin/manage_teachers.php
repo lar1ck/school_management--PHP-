@@ -9,7 +9,7 @@ if ($_SESSION['user_type'] !== 'admin') {
 }
 
 // Fetch all active modules from the modules table
-$sql_modules = "SELECT * FROM ShyakCarrick_tblmodules WHERE is_active = 1";
+$sql_modules = "SELECT * FROM happy__tblmodules WHERE is_active = 1";
 $result_modules = mysqli_query($happy_conn, $sql_modules);
 
 if (isset($_POST['add_teacher'])) {
@@ -19,7 +19,7 @@ if (isset($_POST['add_teacher'])) {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO ShyakCarrick_tblteachers (name, subject, username, password) VALUES ('$name', '$subject', '$username', '$password')";
+    $sql = "INSERT INTO happy__tblteachers (name, subject, username, password) VALUES ('$name', '$subject', '$username', '$password')";
     if (mysqli_query($happy_conn, $sql)) {
         echo "Teacher added successfully!";
     } else {
@@ -37,9 +37,9 @@ if (isset($_POST['edit_teacher'])) {
     // If password is provided, update it; otherwise, leave it unchanged.
     if (!empty($_POST['password'])) {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $sql = "UPDATE ShyakCarrick_tblteachers SET name = '$name', subject = '$subject', username = '$username', password = '$password' WHERE id = '$id'";
+        $sql = "UPDATE happy__tblteachers SET name = '$name', subject = '$subject', username = '$username', password = '$password' WHERE id = '$id'";
     } else {
-        $sql = "UPDATE ShyakCarrick_tblteachers SET name = '$name', subject = '$subject', username = '$username' WHERE id = '$id'";
+        $sql = "UPDATE happy__tblteachers SET name = '$name', subject = '$subject', username = '$username' WHERE id = '$id'";
     }
     
     if (mysqli_query($happy_conn, $sql)) {
@@ -51,7 +51,7 @@ if (isset($_POST['edit_teacher'])) {
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    $sql = "DELETE FROM ShyakCarrick_tblteachers WHERE id = '$id'";
+    $sql = "DELETE FROM happy__tblteachers WHERE id = '$id'";
     if (mysqli_query($happy_conn, $sql)) {
         echo "Teacher deleted successfully!";
     } else {
@@ -59,7 +59,7 @@ if (isset($_GET['delete'])) {
     }
 }
 
-$sql = "SELECT * FROM ShyakCarrick_tblteachers";
+$sql = "SELECT * FROM happy__tblteachers";
 $result = mysqli_query($happy_conn, $sql);
 ?>
 
@@ -203,7 +203,7 @@ $result = mysqli_query($happy_conn, $sql);
   <?php
   if (isset($_GET['edit'])) {
       $id = $_GET['edit'];
-      $sql = "SELECT * FROM ShyakCarrick_tblteachers WHERE id = '$id'";
+      $sql = "SELECT * FROM happy__tblteachers WHERE id = '$id'";
       $resultEdit = mysqli_query($happy_conn, $sql);
       $teacher = mysqli_fetch_assoc($resultEdit);
       if (!$teacher) {

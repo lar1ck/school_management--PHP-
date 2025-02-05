@@ -7,7 +7,7 @@ if ($_SESSION['user_type'] !== 'student') {
     exit();
 }
 
-$sql = "SELECT * FROM ShyakCarrick_tblmarks WHERE student_id = '{$_SESSION['student_id']}'";
+$sql = "SELECT * FROM happy__tblmarks WHERE student_id = '{$_SESSION['student_id']}'";
 $result = mysqli_query($happy_conn, $sql);
 ?>
 

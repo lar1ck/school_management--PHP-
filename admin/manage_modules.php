@@ -10,7 +10,7 @@ if (isset($_POST['add_module'])) {
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
     try {
-        $check_sql = "SELECT id FROM ShyakCarrick_tblmodules WHERE module_name = ?";
+        $check_sql = "SELECT id FROM happy__tblmodules WHERE module_name = ?";
         $stmt = $happy_conn->prepare($check_sql);
         $stmt->bind_param("s", $module_name);
         $stmt->execute();
@@ -19,7 +19,7 @@ if (isset($_POST['add_module'])) {
         if ($stmt->num_rows > 0) {
             $error_message = "Error: A module with the name '$module_name' already exists.";
         } else {
-            $insert_sql = "INSERT INTO ShyakCarrick_tblmodules (module_name, description, parent_module_id, is_active) VALUES (?, ?, ?, ?)";
+            $insert_sql = "INSERT INTO happy__tblmodules (module_name, description, parent_module_id, is_active) VALUES (?, ?, ?, ?)";
             $stmt = $happy_conn->prepare($insert_sql);
             $stmt->bind_param("sssi", $module_name, $description, $parent_module_id, $is_active);
 
@@ -46,7 +46,7 @@ if (isset($_POST['edit_module'])) {
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
     try {
-        $check_sql = "SELECT id FROM ShyakCarrick_tblmodules WHERE module_name = ? AND id != ?";
+        $check_sql = "SELECT id FROM happy__tblmodules WHERE module_name = ? AND id != ?";
         $stmt = $happy_conn->prepare($check_sql);
         $stmt->bind_param("si", $module_name, $id);
         $stmt->execute();
@@ -55,7 +55,7 @@ if (isset($_POST['edit_module'])) {
         if ($stmt->num_rows > 0) {
             $error_message = "Error: A module with the name '$module_name' already exists.";
         } else {
-            $update_sql = "UPDATE ShyakCarrick_tblmodules SET module_name = ?, description = ?, parent_module_id = ?, is_active = ? WHERE id = ?";
+            $update_sql = "UPDATE happy__tblmodules SET module_name = ?, description = ?, parent_module_id = ?, is_active = ? WHERE id = ?";
             $stmt = $happy_conn->prepare($update_sql);
             $stmt->bind_param("sssii", $module_name, $description, $parent_module_id, $is_active, $id);
 
@@ -76,7 +76,7 @@ if (isset($_POST['edit_module'])) {
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    $sql = "DELETE FROM ShyakCarrick_tblmodules WHERE id = '$id'";
+    $sql = "DELETE FROM happy__tblmodules WHERE id = '$id'";
     if (mysqli_query($happy_conn, $sql)) {
         echo "Module deleted successfully!";
     } else {
@@ -84,7 +84,7 @@ if (isset($_GET['delete'])) {
     }
 }
 
-$sql = "SELECT * FROM ShyakCarrick_tblmodules";
+$sql = "SELECT * FROM happy__tblmodules";
 $result = mysqli_query($happy_conn, $sql);
 ?>
 
@@ -250,7 +250,7 @@ $result = mysqli_query($happy_conn, $sql);
     <select name="parent_module_id">
       <option value="">-- Select Parent Module --</option>
       <?php
-      $parentModules = mysqli_query($happy_conn, "SELECT id, module_name FROM ShyakCarrick_tblmodules WHERE parent_module_id IS NULL");
+      $parentModules = mysqli_query($happy_conn, "SELECT id, module_name FROM happy__tblmodules WHERE parent_module_id IS NULL");
       while ($module = mysqli_fetch_assoc($parentModules)) {
           echo "<option value='{$module['id']}'>{$module['module_name']}</option>";
       }
@@ -267,7 +267,7 @@ $result = mysqli_query($happy_conn, $sql);
 
   <?php if (isset($_GET['edit'])) { 
       $id = $_GET['edit'];
-      $sql = "SELECT * FROM ShyakCarrick_tblmodules WHERE id = '$id'";
+      $sql = "SELECT * FROM happy__tblmodules WHERE id = '$id'";
       $result = mysqli_query($happy_conn, $sql);
       $module = mysqli_fetch_assoc($result);
   ?>
@@ -285,7 +285,7 @@ $result = mysqli_query($happy_conn, $sql);
       <select name="parent_module_id">
         <option value="">-- Select Parent Module --</option>
         <?php
-        $parentModules = mysqli_query($happy_conn, "SELECT id, module_name FROM ShyakCarrick_tblmodules WHERE parent_module_id IS NULL AND id != {$module['id']}");
+        $parentModules = mysqli_query($happy_conn, "SELECT id, module_name FROM happy__tblmodules WHERE parent_module_id IS NULL AND id != {$module['id']}");
         while ($parent = mysqli_fetch_assoc($parentModules)) {
             $selected = $parent['id'] == $module['parent_module_id'] ? 'selected' : '';
             echo "<option value='{$parent['id']}' $selected>{$parent['module_name']}</option>";

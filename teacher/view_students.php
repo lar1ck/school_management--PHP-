@@ -9,12 +9,12 @@ if ($_SESSION['user_type'] !== 'teacher') {
 
 $teacher_id = $_SESSION['user_id'];
 
-$teacher_sql = "SELECT subject FROM ShyakCarrick_tblteachers WHERE id = '$teacher_id'";
+$teacher_sql = "SELECT subject FROM happy__tblteachers WHERE id = '$teacher_id'";
 $teacher_res = mysqli_query($happy_conn, $teacher_sql);
 $teacher_data = mysqli_fetch_assoc($teacher_res);
 $teacher_subject = $teacher_data['subject'] ?? '';
 
-$sql = "SELECT * FROM ShyakCarrick_tblstudents";
+$sql = "SELECT * FROM happy__tblstudents";
 $students_result = mysqli_query($happy_conn, $sql);
 
 $marks_result = false;
@@ -25,7 +25,7 @@ if (isset($_POST['add_mark'])) {
     $marks = $_POST['marks'];
     $subject = $teacher_subject;
     
-    $insert_sql = "INSERT INTO ShyakCarrick_tblmarks (student_id, subject, marks, teacher_id) VALUES (?, ?, ?, ?)";
+    $insert_sql = "INSERT INTO happy__tblmarks (student_id, subject, marks, teacher_id) VALUES (?, ?, ?, ?)";
     $stmt = $happy_conn->prepare($insert_sql);
     $stmt->bind_param("ssdi", $student_id, $subject, $marks, $teacher_id);
     if ($stmt->execute()) {
@@ -39,16 +39,16 @@ if (isset($_POST['add_mark'])) {
 
 if (isset($_GET['student_id'])) {
     $student_id = $_GET['student_id'];
-    $marks_sql = "SELECT * FROM ShyakCarrick_tblmarks WHERE student_id = '$student_id' AND teacher_id = '$teacher_id'";
+    $marks_sql = "SELECT * FROM happy__tblmarks WHERE student_id = '$student_id' AND teacher_id = '$teacher_id'";
     $marks_result = mysqli_query($happy_conn, $marks_sql);
-    $student_info = mysqli_fetch_assoc(mysqli_query($happy_conn, "SELECT * FROM ShyakCarrick_tblstudents WHERE student_id = '$student_id'"));
+    $student_info = mysqli_fetch_assoc(mysqli_query($happy_conn, "SELECT * FROM happy__tblstudents WHERE student_id = '$student_id'"));
 }
 
 if (isset($_POST['update_marks'])) {
     $mark_id = $_POST['mark_id'];
     $new_marks = $_POST['new_marks'];
 
-    $sql_update = "UPDATE ShyakCarrick_tblmarks SET marks = '$new_marks' WHERE id = '$mark_id' AND teacher_id = '$teacher_id'";
+    $sql_update = "UPDATE happy__tblmarks SET marks = '$new_marks' WHERE id = '$mark_id' AND teacher_id = '$teacher_id'";
     mysqli_query($happy_conn, $sql_update);
 
     echo "<script>window.location.href = window.location.href;</script>";
@@ -57,7 +57,7 @@ if (isset($_POST['update_marks'])) {
 if (isset($_POST['delete_marks'])) {
     $mark_id = $_POST['mark_id'];
 
-    $sql_delete = "DELETE FROM ShyakCarrick_tblmarks WHERE id = '$mark_id' AND teacher_id = '$teacher_id'";
+    $sql_delete = "DELETE FROM happy__tblmarks WHERE id = '$mark_id' AND teacher_id = '$teacher_id'";
     mysqli_query($happy_conn, $sql_delete);
 
     echo "<script>window.location.href = window.location.href;</script>";

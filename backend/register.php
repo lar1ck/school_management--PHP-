@@ -8,11 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = mysqli_real_escape_string($happy_conn, $_POST['password']);
 
     if ($role == 'admin') {
-        $sql = "SELECT * FROM ShyakCarrick_tbladmins WHERE username = '$email'";
+        $sql = "SELECT * FROM happy__tbladmins WHERE username = '$email'";
     } elseif ($role == 'teacher') {
-        $sql = "SELECT * FROM ShyakCarrick_tblteachers WHERE username = '$email'";
+        $sql = "SELECT * FROM happy__tblteachers WHERE username = '$email'";
     } elseif ($role == 'student') {
-        $sql = "SELECT * FROM ShyakCarrick_tblstudents WHERE student_id = '$email'";
+        $sql = "SELECT * FROM happy__tblstudents WHERE student_id = '$email'";
     }
 
     $result = mysqli_query($happy_conn, $sql);
@@ -32,11 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
         if ($role == 'admin') {
-            $sql = "INSERT INTO ShyakCarrick_tbladmins (username, password) VALUES ('$email', '$hashed_password')";
+            $sql = "INSERT INTO happy__tbladmins (username, password) VALUES ('$email', '$hashed_password')";
         } elseif ($role == 'teacher') {
-            $sql = "INSERT INTO ShyakCarrick_tblteachers (username, password) VALUES ('$email', '$hashed_password')";
+            $sql = "INSERT INTO happy__tblteachers (username, password) VALUES ('$email', '$hashed_password')";
         } elseif ($role == 'student') {
-            $sql = "INSERT INTO ShyakCarrick_tblstudents (student_id, password) VALUES ('$email', '$hashed_password')";
+            $sql = "INSERT INTO happy__tblstudents (student_id, password) VALUES ('$email', '$hashed_password')";
         }
 
         if (mysqli_query($happy_conn, $sql)) {
@@ -63,34 +63,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>Register</h2>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-    <form action="register.php" method="POST">
-        <label for="role">Select Role:</label>
-        <select name="role" required>
-            <option value="admin">Admin</option>
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
-        </select>
+    <div class="bg-white shadow-md rounded-lg p-8 w-96">
+        <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Register</h2>
 
-        <br><br>
+        <form action="register.php" method="POST" class="space-y-4">
+            <!-- Role Selection -->
+            <div>
+                <label for="role" class="block text-gray-700 font-medium">Select Role:</label>
+                <select name="role" required class="w-full p-2 border border-gray-300 rounded">
+                    <option value="admin">Admin</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
 
-        <label for="email">ID:</label>
-        <input type="text" name="email" required placeholder="Enter your ID">
+            <!-- Email/ID -->
+            <div>
+                <label for="email" class="block text-gray-700 font-medium">ID:</label>
+                <input type="text" name="email" required placeholder="Enter your ID"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
 
-        <br><br>
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-gray-700 font-medium">Password:</label>
+                <input type="password" name="password" required placeholder="Enter your password"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" required placeholder="Enter your password">
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+                Register
+            </button>
+        </form>
 
-        <br><br>
-
-        <button type="submit">Register</button>
-    </form>
-    aready have an account <a href="./login.php">login</a>
-    
+        <!-- Login Link -->
+        <p class="text-center text-gray-600 mt-4">
+            Already have an account? <a href="./login.php" class="text-blue-600 font-medium hover:underline">Login</a>
+        </p>
+    </div>
 
 </body>
 </html>

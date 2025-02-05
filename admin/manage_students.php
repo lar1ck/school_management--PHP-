@@ -16,7 +16,7 @@ function generate_student_id($conn) {
     $student_id = $prefix . $year . $random_digit;
     $exists = true;
     while ($exists) {
-        $query = "SELECT id FROM ShyakCarrick_tblstudents WHERE student_id = '$student_id'";
+        $query = "SELECT id FROM happy__tblstudents WHERE student_id = '$student_id'";
         $result = mysqli_query($conn, $query);
         if (mysqli_num_rows($result) > 0) {
             $random_digit = rand(0, 9);
@@ -37,7 +37,7 @@ if (isset($_POST['add_student'])) {
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $happy_conn->prepare("INSERT INTO ShyakCarrick_tblstudents (name, student_id, class, other_details, password) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $happy_conn->prepare("INSERT INTO happy__tblstudents (name, student_id, class, other_details, password) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $name, $student_id, $class, $other_details, $hashed_password);
 
     if ($stmt->execute()) {
@@ -58,10 +58,10 @@ if (isset($_POST['edit_student'])) {
 
     if (!empty($password)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $happy_conn->prepare("UPDATE ShyakCarrick_tblstudents SET name=?, student_id=?, class=?, other_details=?, password=? WHERE id=?");
+        $stmt = $happy_conn->prepare("UPDATE happy__tblstudents SET name=?, student_id=?, class=?, other_details=?, password=? WHERE id=?");
         $stmt->bind_param("sssssi", $name, $student_id, $class, $other_details, $hashed_password, $id);
     } else {
-      $stmt = $happy_conn->prepare("UPDATE ShyakCarrick_tblstudents SET name=?, student_id=?, class=?, other_details=? WHERE id=?");
+      $stmt = $happy_conn->prepare("UPDATE happy__tblstudents SET name=?, student_id=?, class=?, other_details=? WHERE id=?");
         $stmt->bind_param("ssssi", $name, $student_id, $class, $other_details, $id);
     }
 
@@ -76,7 +76,7 @@ if (isset($_POST['edit_student'])) {
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     
-    $stmt = $happy_conn->prepare("DELETE FROM ShyakCarrick_tblstudents WHERE id = ?");
+    $stmt = $happy_conn->prepare("DELETE FROM happy__tblstudents WHERE id = ?");
     $stmt->bind_param("i", $id);
     
     if ($stmt->execute()) {
@@ -86,7 +86,7 @@ if (isset($_GET['delete'])) {
         echo "Error: " . $stmt->error;
     }
 }
-$sql = "SELECT * FROM ShyakCarrick_tblstudents";
+$sql = "SELECT * FROM happy__tblstudents";
 $result = mysqli_query($happy_conn, $sql);
 ?>
 
@@ -227,7 +227,7 @@ $result = mysqli_query($happy_conn, $sql);
   <?php 
   if (isset($_GET['edit'])) {
       $id = $_GET['edit'];
-      $stmt = $happy_conn->prepare("SELECT * FROM ShyakCarrick_tblstudents WHERE id = ?");
+      $stmt = $happy_conn->prepare("SELECT * FROM happy__tblstudents WHERE id = ?");
       $stmt->bind_param("i", $id);
       $stmt->execute();
       $student = $stmt->get_result()->fetch_assoc();
