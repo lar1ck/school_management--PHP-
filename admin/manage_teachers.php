@@ -62,7 +62,15 @@ if (isset($_GET['delete'])) {
 $sql = "SELECT * FROM happy__tblteachers";
 $result = mysqli_query($happy_conn, $sql);
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
 <div class="management-section">
   <style>
     .management-section {
@@ -268,3 +276,6 @@ $result = mysqli_query($happy_conn, $sql);
     </tbody>
   </table>
 </div>
+
+</body>
+</html>
