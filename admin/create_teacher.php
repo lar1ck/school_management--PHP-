@@ -1,4 +1,3 @@
-<!-- create_teacher.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +14,8 @@
         header('Location: ../backend/login.php');
         exit();
     }
+    
+    $result_modules = mysqli_query($happy_conn, "SELECT * FROM happy__tblmodules WHERE is_active = 1");
 
     if (isset($_POST['add_teacher'])) {
         $name = htmlspecialchars($_POST['name']);
@@ -35,8 +36,15 @@
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>
             <input type="text" name="name" required class="w-full p-2 border rounded">
-            <label class="block">Subject</label>
-            <input type="text" name="subject" required class="w-full p-2 border rounded">
+            <label class="block">Module</label>
+            <select name="subject" required class="w-full p-2 border rounded">
+                <option value="">Select Module</option>
+                <?php while ($module = mysqli_fetch_assoc($result_modules)) { ?>
+                    <option value="<?php echo $module['module_name']; ?>">
+                        <?php echo $module['module_name']; ?>
+                    </option>
+                <?php } ?>
+            </select>
             <label class="block">Username</label>
             <input type="text" name="username" required class="w-full p-2 border rounded">
             <label class="block">Password</label>

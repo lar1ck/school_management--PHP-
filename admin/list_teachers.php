@@ -30,7 +30,7 @@
                 <tr class="bg-gray-200">
                     <th class="p-3 text-left">ID</th>
                     <th class="p-3 text-left">Name</th>
-                    <th class="p-3 text-left">Subject</th>
+                    <th class="p-3 text-left">Module</th>
                     <th class="p-3 text-left">Username</th>
                     <th class="p-3 text-left">Actions</th>
                 </tr>

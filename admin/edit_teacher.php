@@ -1,3 +1,4 @@
+<!-- edit_teacher.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +21,8 @@
         $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblteachers WHERE id = $id");
         $teacher = mysqli_fetch_assoc($result);
     }
+    
+    $result_modules = mysqli_query($happy_conn, "SELECT * FROM happy__tblmodules WHERE is_active = 1");
     
     if (isset($_POST['edit_teacher'])) {
         $name = htmlspecialchars($_POST['name']);
@@ -45,8 +48,15 @@
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>
             <input type="text" name="name" value="<?php echo htmlspecialchars($teacher['name']); ?>" required class="w-full p-2 border rounded">
-            <label class="block">Subject</label>
-            <input type="text" name="subject" value="<?php echo htmlspecialchars($teacher['subject']); ?>" required class="w-full p-2 border rounded">
+            <label class="block">Module</label>
+            <select name="subject" required class="w-full p-2 border rounded">
+                <option value="">Select Module</option>
+                <?php while ($module = mysqli_fetch_assoc($result_modules)) { ?>
+                    <option value="<?php echo $module['module_name']; ?>" <?php if($teacher['subject'] == $module['module_name']) echo 'selected'; ?>>
+                        <?php echo $module['module_name']; ?>
+                    </option>
+                <?php } ?>
+            </select>
             <label class="block">Username</label>
             <input type="text" name="username" value="<?php echo htmlspecialchars($teacher['username']); ?>" required class="w-full p-2 border rounded">
             <label class="block">Password (Leave empty to keep current password)</label>
