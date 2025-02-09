@@ -104,9 +104,9 @@ if (isset($_POST['delete_marks'])) {
       <tbody>
         <?php while ($mark = mysqli_fetch_assoc($marks_result)) { ?>
           <tr class="border-b border-white hover:bg-gray-600">
-          <td class="py-3 px-4 text-white"><?php echo htmlspecialchars($mark['subject']); ?></td>
-             <td class="py-3 px-4 text-white"><?php echo htmlspecialchars($mark['marks']); ?></td>
-             <td class="py-3 px-4 text-white"><?php echo date('M j, Y', strtotime($mark['entry_date'])); ?></td>
+            <td class="py-3 px-4 text-white"><?php echo htmlspecialchars($mark['subject']); ?></td>
+            <td class="py-3 px-4 text-white"><?php echo htmlspecialchars($mark['marks']); ?></td>
+            <td class="py-3 px-4 text-white"><?php echo date('M j, Y', strtotime($mark['entry_date'])); ?></td>
             <td class="py-3 px-4">
               <form method="POST" class="inline">
                 <input type="hidden" name="mark_id" value="<?php echo $mark['id']; ?>">
@@ -119,3 +119,34 @@ if (isset($_POST['delete_marks'])) {
     </table>
   </div>
 <?php endif; ?>
+
+
+<?php
+if (isset($_GET['action']) && $_GET['action'] === 'add_marks'):
+?>
+  <div class="mt-6 rounded-lg">
+    <h2 class="text-2xl font-semibold text-white mb-4">Add Marks for <?php echo htmlspecialchars($student_info['name']); ?></h2>
+    <form method="POST" class="space-y-4">
+      <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_info['student_id']); ?>">
+      <p class="text-white"><strong>Subject:</strong> <?php echo htmlspecialchars($teacher_subject); ?></p>
+      <label for="marks" class="block text-white">Marks:</label>
+      <input type="number" name="marks" id="marks" step="0.01" min="0" max="100" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-gray-800 text-white">
+      <button type="submit" name="add_mark" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Submit Marks</button>
+    </form>
+  </div>
+<?php endif; ?>
+
+<script>
+  function toggleEdit(markId) {
+    var inputField = document.getElementById("new_marks-" + markId);
+    var button = document.getElementById("edit-btn-" + markId);
+    var form = document.getElementById("update-form-" + markId);
+    if (inputField.disabled) {
+      inputField.disabled = false;
+      inputField.focus();
+      button.textContent = "Save";
+    } else {
+      form.submit();
+    }
+  }
+</script>
