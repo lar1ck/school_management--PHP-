@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -33,6 +32,7 @@ if (isset($_POST['edit_module'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,10 +40,16 @@ if (isset($_POST['edit_module'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class=" bg-gray-950  text-whitebg-gray-950 text-white">
     <?php include 'sidebar.php'; ?>
-    <div class="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md  mr-32">
-        <h1 class="text-2xl font-semibold text-center mb-4">Edit Module</h1>
+    <div class="max-w-3xl mt-20 mx-auto bg-gray-900 p-6 rounded-lg mt-16 ">
+        <div class=" flex gap-4 items-center">
+            <button onclick="window.history.back()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 mb-6">
+                Go Back
+            </button>
+            <h1 class="text-2xl font-semibold text-center mb-4">Edit Module</h1>
+        </div>
         <form method="POST" class="space-y-4">
             <input type="hidden" name="id" value="<?php echo $module['id']; ?>">
             <label class="block">Module Name</label>
@@ -66,4 +72,5 @@ if (isset($_POST['edit_module'])) {
         </form>
     </div>
 </body>
+
 </html>

@@ -20,7 +20,7 @@ $marks_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
 
 <body class=" bg-gray-950  text-whitebg-gray-950 text-white">
     <?php include 'sidebar.php'; ?>
-    <div class="max-w-6xl mx-auto p-4 rounded-lg ml-72">
+    <div class="max-w-6xl mx-auto p-4 rounded-lg mt-20">
         <h1 class="text-3xl font-semibold text-center mb-6">School Management Dashboard</h1>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">

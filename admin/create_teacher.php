@@ -32,7 +32,7 @@
     }
     ?>
       <?php include 'sidebar.php'; ?>
-      <div class="max-w-3xl mx-auto mr-32">
+      <div class="max-w-3xl mt-20 mx-auto  ">
         <h1 class="text-2xl font-semibold text-center mb-4">Add New Teacher</h1>
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>

@@ -19,9 +19,9 @@ $result = mysqli_query($happy_conn, $sql);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class=" bg-gray-950  text-whitebg-gray-950 text-white">
+<body class=" bg-gray-950  text-white bg-gray-950 text-white">
 <?php include 'sidebar.php'; ?>
-<div class="max-w-3xl mx-auto mr-32 pt-6">
+<div class="max-w-3xl mt-20 mx-auto pt-6">
 <div class=" flex justify-between items-center pb-4">
       <h1 class=" text-2xl font-semibold">Modules List</h1>
       <a href="create_student.php" class="bg-blue-600 px-4 py-3 text-center text-sm font-semibold inline-block text-white cursor-pointer uppercase transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:scale-95">Add New Module</a>

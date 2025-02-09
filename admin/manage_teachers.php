@@ -94,7 +94,7 @@
     }
     ?>
     
-    <div class="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
+    <div class="max-w-3xl mt-20 mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold text-center mb-4">Edit Teacher</h1>
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>
@@ -219,7 +219,7 @@ if (isset($_GET['id'])) {
     }
     ?>
     
-    <div class="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
+    <div class="max-w-3xl mt-20 mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold text-center mb-4">Add New Teacher</h1>
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>

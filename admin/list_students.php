@@ -20,7 +20,7 @@ $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblstudents");
 
 <body class=" bg-gray-950  text-white bg-gray-950">
   <?php include 'sidebar.php'; ?>
-  <div class="max-w-3xl mx-auto mr-32">
+  <div class="max-w-3xl mt-20 mx-auto  ">
     <div class=" flex justify-between items-center pb-4">
       <h1 class=" text-2xl font-semibold">Student List</h1>
       <a href="create_student.php" class="bg-blue-600 px-4 py-3 text-center text-sm font-semibold inline-block text-white cursor-pointer uppercase transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:scale-95">Add New Student</a>
@@ -43,6 +43,7 @@ $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblstudents");
             <td class="p-3"><?php echo htmlspecialchars($row['student_id']); ?></td>
             <td class="p-3"><?php echo htmlspecialchars($row['class']); ?></td>
             <td class="p-3">
+              <a href="student_mark.php?id=<?php echo $row['student_id']; ?>" class="text-blue-500">see Marks</a> |
               <a href="edit_student.php?id=<?php echo $row['id']; ?>" class="text-blue-500">Edit</a> |
               <a href="delete_student.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure?');" class="text-red-500">Delete</a>
             </td>
