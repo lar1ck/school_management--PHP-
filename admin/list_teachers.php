@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4">
+<body class="bg-gray-100 text-gray-800">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
