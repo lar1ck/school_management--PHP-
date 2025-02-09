@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Teacher</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4">
+<body class="bg-gray-100 text-gray-800">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -30,8 +31,8 @@
         exit();
     }
     ?>
-    
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <?php include 'sidebar.php'; ?>
+      <div class="max-w-3xl mx-auto mr-32">
         <h1 class="text-2xl font-semibold text-center mb-4">Add New Teacher</h1>
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>
