@@ -1,281 +1,131 @@
-<?php 
-if (!defined('IN_DASHBOARD')) {
-    die('Access denied.');
-}
-
-if ($_SESSION['user_type'] !== 'admin') {
-    header('Location: ../backend/login.php');  
-    exit();
-}
-
-// Fetch all active modules from the modules table
-$sql_modules = "SELECT * FROM happy__tblmodules WHERE is_active = 1";
-$result_modules = mysqli_query($happy_conn, $sql_modules);
-
-if (isset($_POST['add_teacher'])) {
-    $name = $_POST['name'];
-    // Instead of a free-text subject, we now take the selected module
-    $subject = $_POST['subject'];
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO happy__tblteachers (name, subject, username, password) VALUES ('$name', '$subject', '$username', '$password')";
-    if (mysqli_query($happy_conn, $sql)) {
-        echo "Teacher added successfully!";
-    } else {
-        echo "Error: " . mysqli_error($happy_conn);
-    }
-}
-
-if (isset($_POST['edit_teacher'])) {
-    $id = $_POST['id'];
-    $name = $_POST['name'];
-    // Use the selected module from the dropdown
-    $subject = $_POST['subject'];
-    $username = $_POST['username'];
-    
-    // If password is provided, update it; otherwise, leave it unchanged.
-    if (!empty($_POST['password'])) {
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $sql = "UPDATE happy__tblteachers SET name = '$name', subject = '$subject', username = '$username', password = '$password' WHERE id = '$id'";
-    } else {
-        $sql = "UPDATE happy__tblteachers SET name = '$name', subject = '$subject', username = '$username' WHERE id = '$id'";
-    }
-    
-    if (mysqli_query($happy_conn, $sql)) {
-        echo "Teacher updated successfully!";
-    } else {
-        echo "Error: " . mysqli_error($happy_conn);
-    }
-}
-
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    $sql = "DELETE FROM happy__tblteachers WHERE id = '$id'";
-    if (mysqli_query($happy_conn, $sql)) {
-        echo "Teacher deleted successfully!";
-    } else {
-        echo "Error: " . mysqli_error($happy_conn);
-    }
-}
-
-$sql = "SELECT * FROM happy__tblteachers";
-$result = mysqli_query($happy_conn, $sql);
-?>
+<!-- list_teachers.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Teachers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  
-<div class="management-section">
-  <style>
-    .management-section {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.6;
-      padding: 2rem;
-      background-color: #f8f9fa;
-      color: #2c3e50;
+<body class="bg-gray-100 text-gray-800 p-4">
+    <?php
+    session_start();
+    $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
+    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+        header('Location: ../backend/login.php');
+        exit();
     }
-    h1 {
-      font-weight: 300;
-      margin: 2rem 0;
-      text-align: center;
-      font-size: 2.25rem;
-    }
-    form {
-      background: white;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 2rem;
-      margin: 2rem auto;
-      max-width: 600px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-    form h2 {
-      margin: 0 0 1.5rem;
-      font-weight: 400;
-      color: #7f8c8d;
-      font-size: 1.25rem;
-    }
-    label {
-      display: block;
-      margin: 1rem 0 0.5rem;
-      color: #95a5a6;
-      font-size: 0.9rem;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 0.8rem;
-      border: 1px solid #e0e0e0;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-      box-sizing: border-box;
-      font-size: 1rem;
-    }
-    button[type="submit"] {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      margin-top: 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      width: 100%;
-    }
-    button[type="submit"]:hover {
-      opacity: 0.9;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      margin: 2rem 0;
-      overflow: hidden;
-    }
-    th, td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    th {
-      background-color: #f8f9fa;
-      color: #7f8c8d;
-      font-weight: 500;
-    }
-    tr:hover {
-      background-color: #fafafa;
-    }
-    td a {
-      color: #3498db;
-      padding: 0.25rem 0.5rem;
-      margin: 0 0.25rem;
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
-    td a:hover {
-      background: #f0f0f0;
-    }
-    @media (max-width: 768px) {
-      .management-section {
-        padding: 1rem;
-      }
-      table {
-        display: block;
-        overflow-x: auto;
-      }
-      form {
-        padding: 1.5rem;
-        margin: 1rem 0;
-      }
-      h1 {
-        font-size: 1.75rem;
-        margin: 2rem 0;
-      }
-    }
-  </style>
-  <h1>Manage Teachers</h1>
-
-  <!-- Add Teacher Form -->
-  <form method="POST">
-    <h2>Add New Teacher</h2>
-    <label for="name">Name</label>
-    <input type="text" name="name" required>
     
-    <label for="subject">Module</label>
-    <select name="subject" required>
-      <option value="">Select Module</option>
-      <?php while ($module = mysqli_fetch_assoc($result_modules)) { ?>
-        <option value="<?php echo $module['module_name']; ?>">
-          <?php echo $module['module_name']; ?>
-        </option>
-      <?php } ?>
-    </select>
+    $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblteachers");
+    ?>
     
-    <label for="username">Username</label>
-    <input type="text" name="username" required>
-    
-    <label for="password">Password</label>
-    <input type="password" name="password" required>
-    
-    <button type="submit" name="add_teacher">Add Teacher</button>
-  </form>
-
-  <!-- Edit Teacher Form -->
-  <?php
-  if (isset($_GET['edit'])) {
-      $id = $_GET['edit'];
-      $sql = "SELECT * FROM happy__tblteachers WHERE id = '$id'";
-      $resultEdit = mysqli_query($happy_conn, $sql);
-      $teacher = mysqli_fetch_assoc($resultEdit);
-      if (!$teacher) {
-          echo "Teacher not found.";
-      } else {
-  ?>
-    <form method="POST">
-      <h2>Edit Teacher</h2>
-      <input type="hidden" name="id" value="<?php echo $teacher['id']; ?>">
-      
-      <label for="name">Name</label>
-      <input type="text" name="name" value="<?php echo $teacher['name']; ?>" required>
-      
-      <label for="subject">Module</label>
-      <select name="subject" required>
-        <option value="">Select Module</option>
-        <?php 
-        // Reuse the same modules result; if needed, re-query for fresh result
-        $result_modules = mysqli_query($happy_conn, $sql_modules);
-        while ($module = mysqli_fetch_assoc($result_modules)) { ?>
-          <option value="<?php echo $module['module_name']; ?>" <?php if($teacher['subject'] == $module['module_name']) echo 'selected'; ?>>
-            <?php echo $module['module_name']; ?>
-          </option>
-        <?php } ?>
-      </select>
-      
-      <label for="username">Username</label>
-      <input type="text" name="username" value="<?php echo $teacher['username']; ?>" required>
-      
-      <label for="password">Password (Leave empty to keep unchanged)</label>
-      <input type="password" name="password">
-      
-      <button type="submit" name="edit_teacher">Update Teacher</button>
-    </form>
-  <?php
-      }
-  } 
-  ?>
-
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Module</th>
-        <th>Username</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-      <tr>
-        <td><?php echo $row['id']; ?></td>
-        <td><?php echo $row['name']; ?></td>
-        <td><?php echo $row['subject']; ?></td>
-        <td><?php echo $row['username']; ?></td>
-        <td>
-          <a href="?page=manage_teachers&edit=<?php echo $row['id']; ?>">Edit</a>
-        </td>
-      </tr>
-      <?php } ?>
-    </tbody>
-  </table>
-</div>
-
+    <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-semibold text-center mb-4">List of Teachers</h1>
+        <a href="create_teacher.php" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Add Teacher</a>
+        <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-3 text-left">ID</th>
+                    <th class="p-3 text-left">Name</th>
+                    <th class="p-3 text-left">Subject</th>
+                    <th class="p-3 text-left">Username</th>
+                    <th class="p-3 text-left">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                    <tr class="border-b">
+                        <td class="p-3"><?php echo $row['id']; ?></td>
+                        <td class="p-3"><?php echo htmlspecialchars($row['name']); ?></td>
+                        <td class="p-3"><?php echo htmlspecialchars($row['subject']); ?></td>
+                        <td class="p-3"><?php echo htmlspecialchars($row['username']); ?></td>
+                        <td class="p-3">
+                            <a href="edit_teacher.php?id=<?php echo $row['id']; ?>" class="text-blue-500">Edit</a> |
+                            <a href="delete_teacher.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure?');" class="text-red-500">Delete</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
+
+<!-- edit_teacher.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Teacher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4">
+    <?php
+    session_start();
+    $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
+    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+        header('Location: ../backend/login.php');
+        exit();
+    }
+    
+    if (isset($_GET['id'])) {
+        $id = intval($_GET['id']);
+        $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblteachers WHERE id = $id");
+        $teacher = mysqli_fetch_assoc($result);
+    }
+    
+    if (isset($_POST['edit_teacher'])) {
+        $name = htmlspecialchars($_POST['name']);
+        $subject = htmlspecialchars($_POST['subject']);
+        $username = htmlspecialchars($_POST['username']);
+        
+        if (!empty($_POST['password'])) {
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $stmt = $happy_conn->prepare("UPDATE happy__tblteachers SET name=?, subject=?, username=?, password=? WHERE id=?");
+            $stmt->bind_param("ssssi", $name, $subject, $username, $password, $id);
+        } else {
+            $stmt = $happy_conn->prepare("UPDATE happy__tblteachers SET name=?, subject=?, username=? WHERE id=?");
+            $stmt->bind_param("sssi", $name, $subject, $username, $id);
+        }
+        $stmt->execute();
+        header("Location: list_teachers.php");
+        exit();
+    }
+    ?>
+    
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-semibold text-center mb-4">Edit Teacher</h1>
+        <form method="POST" class="space-y-4">
+            <label class="block">Name</label>
+            <input type="text" name="name" value="<?php echo htmlspecialchars($teacher['name']); ?>" required class="w-full p-2 border rounded">
+            <label class="block">Subject</label>
+            <input type="text" name="subject" value="<?php echo htmlspecialchars($teacher['subject']); ?>" required class="w-full p-2 border rounded">
+            <label class="block">Username</label>
+            <input type="text" name="username" value="<?php echo htmlspecialchars($teacher['username']); ?>" required class="w-full p-2 border rounded">
+            <label class="block">Password (Leave empty to keep current password)</label>
+            <input type="password" name="password" class="w-full p-2 border rounded">
+            <button type="submit" name="edit_teacher" class="bg-blue-500 text-white px-4 py-2 rounded">Update Teacher</button>
+        </form>
+    </div>
+</body>
+</html>
+
+<!-- delete_teacher.php -->
+<?php
+session_start();
+$happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
+if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+    header('Location: ../backend/login.php');
+    exit();
+}
+
+if (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $stmt = $happy_conn->prepare("DELETE FROM happy__tblteachers WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    header("Location: list_teachers.php");
+    exit();
+}
+?>

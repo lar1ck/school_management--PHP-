@@ -10,7 +10,7 @@
         <a href="list_students.php" class="flex items-center px-4 py-2 rounded-md transition-colors <?= $currentPage === 'manage_students' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100' ?>">
             <i class="bi bi-person-lines-fill mr-2"></i> Students
         </a>
-        <a href="?page=manage_teachers" class="flex items-center px-4 py-2 rounded-md transition-colors <?= $currentPage === 'manage_teachers' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100' ?>">
+        <a href="list_teachers.php" class="flex items-center px-4 py-2 rounded-md transition-colors <?= $currentPage === 'manage_teachers' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100' ?>">
             <i class="bi bi-people-fill mr-2"></i> Teachers
         </a>
         <a href="?page=manage_modules" class="flex items-center px-4 py-2 rounded-md transition-colors <?= $currentPage === 'manage_modules' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100' ?>">
