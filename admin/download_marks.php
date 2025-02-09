@@ -9,7 +9,15 @@ if ($_SESSION['user_type'] !== 'admin') {
 }
 
 $id = intval($_GET['id']);
-$sql = "SELECT * FROM happy__tblmarks WHERE student_id = $id";
+
+// Fetch student details
+$student_query = "SELECT name FROM happy__tblstudents WHERE student_id = '$id'";
+$student_result = mysqli_query($happy_conn, $student_query);
+$student_data = mysqli_fetch_assoc($student_result);
+$student_name = $student_data['name'] ?? 'Unknown Student';
+
+// Fetch marks
+$sql = "SELECT * FROM happy__tblmarks WHERE student_id = '$id'";
 $result = mysqli_query($happy_conn, $sql);
 
 // Create PDF instance
@@ -20,6 +28,11 @@ $pdf->SetFont('Arial', 'B', 16);
 // Title
 $pdf->Cell(190, 10, 'Student Marks Report', 1, 1, 'C');
 $pdf->Ln(10);
+
+// Student Name
+$pdf->SetFont('Arial', 'B', 14);
+$pdf->Cell(190, 10, "Student: $student_name", 0, 1, 'L');
+$pdf->Ln(5);
 
 // Table Headers
 $pdf->SetFont('Arial', 'B', 12);
@@ -36,5 +49,5 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Output the PDF as a download
-$pdf->Output('D', 'student_marks.pdf'); // 'D' forces file download
+$pdf->Output('D', "Student_Marks_$id.pdf"); // 'D' forces file download
 ?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once('../backend/config.php');
+$happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
 
 if ($_SESSION['user_type'] !== 'admin') {
     header('Location: ../backend/login.php');
@@ -9,6 +9,10 @@ if ($_SESSION['user_type'] !== 'admin') {
 
 $id = intval($_GET['id']);
 $sql = "SELECT * FROM happy__tblmarks WHERE student_id = $id";
+$get_student = "SELECT * FROM happy__tblstudents WHERE student_id= $id";
+$get_student_result = mysqli_query($happy_conn, $get_student);
+$student_data = mysqli_fetch_assoc($get_student_result);
+
 $result = mysqli_query($happy_conn, $sql);
 ?>
 <!DOCTYPE html>
@@ -24,16 +28,17 @@ $result = mysqli_query($happy_conn, $sql);
 <body class=" bg-gray-950  text-whitebg-gray-950 p-6">
     <?php include 'sidebar.php'; ?>
     <div class="max-w-3xl mt-20 mx-auto  ">
-        <button onclick="window.history.back()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 mb-6">
-            Go Back
-        </button>
-
-        <div class="  flex gap-2">
-            <h1 class="text-3xl font-bold text-white mb-6">Student marks Marks</h1>
+        <div class=" flex gap-4">
+            <button onclick="window.history.back()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 mb-6">
+                Go Back
+            </button>
             <a href="download_marks.php?id=<?php echo $id; ?>" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 mb-6 inline-block">
                 Generate Report
             </a>
+        </div>
 
+        <div class="  flex gap-2">
+            <h1 class="text-3xl font-bold text-white mb-6">Student marks for: <?php echo htmlspecialchars($student_data['name'] ?? 'Unknown'); ?></h1>
         </div>
 
         <div class="bg-gray-900 shadow-md rounded-lg overflow-hidden">
