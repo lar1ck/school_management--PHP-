@@ -29,7 +29,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-950 h-screen flex">
+<body class=" bg-gray-950  text-whitebg-gray-950 h-screen flex">
   <aside class="bg-gray-900 text-white w-64 p-6 flex flex-col h-screen">
     <a href="?page=marks_entry" class=" flex gap-2 items-center space-y-2 mb-2">
       <img src="../images/1.png" alt="Panel Logo" class="w-12 h-12">

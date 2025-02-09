@@ -27,7 +27,7 @@ $result_marks = mysqli_query($happy_conn, $sql_marks);
 </div>
 
 <h2 class="text-2xl font-semibold text-white mb-4">Marks History</h2>
-<table class="w-full bg-gray-700 border border-border rounded-lg overflow-hidden">
+<table class="w-full bg-gray-700 border border-gray-700 rounded-lg overflow-hidden">
   <thead>
     <tr class="bg-gray-800 text-white">
       <th class="py-3 px-4 text-left">Student ID</th>

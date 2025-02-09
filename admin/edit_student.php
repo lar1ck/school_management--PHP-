@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -44,17 +44,17 @@
     ?>
  <?php include 'sidebar.php'; ?>
 
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md mr-32">
+    <div class="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md mr-32">
         <h1 class="text-2xl font-semibold text-center mb-4">Edit Student</h1>
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>
-            <input type="text" name="name" value="<?php echo htmlspecialchars($student['name']); ?>" required class="w-full p-2 border rounded">
+            <input type="text" name="name" value="<?php echo htmlspecialchars($student['name']); ?>" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Class</label>
-            <input type="text" name="class" value="<?php echo htmlspecialchars($student['class']); ?>" required class="w-full p-2 border rounded">
+            <input type="text" name="class" value="<?php echo htmlspecialchars($student['class']); ?>" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Other Details</label>
-            <textarea name="other_details" class="w-full p-2 border rounded"><?php echo htmlspecialchars($student['other_details']); ?></textarea>
+            <textarea name="other_details" class="w-full p-2 border rounded bg-gray-800"><?php echo htmlspecialchars($student['other_details']); ?></textarea>
             <label class="block">Password (Leave empty to keep current password)</label>
-            <input type="password" name="password" class="w-full p-2 border rounded">
+            <input type="password" name="password" class="w-full p-2 border rounded bg-gray-800">
             <button type="submit" name="edit_student" class="bg-blue-500 text-white px-4 py-2 rounded">Update Student</button>
         </form>
     </div>

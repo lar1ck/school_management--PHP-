@@ -1,9 +1,10 @@
 <?php
+session_start();
 $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
-// if ($_SESSION['user_type'] !== 'admin') {
-//   header('Location: ../backend/login.php');
-//   exit();
-// }
+if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+    header('Location: ../backend/login.php');
+    exit();
+}
 
 $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblstudents");
 ?>
@@ -17,16 +18,16 @@ $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblstudents");
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="">
+<body class=" bg-gray-950  text-white bg-gray-950">
   <?php include 'sidebar.php'; ?>
   <div class="max-w-3xl mx-auto mr-32">
     <div class=" flex justify-between items-center pb-4">
       <h1 class=" text-2xl font-semibold">Student List</h1>
       <a href="create_student.php" class="bg-blue-600 px-4 py-3 text-center text-sm font-semibold inline-block text-white cursor-pointer uppercase transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:scale-95">Add New Student</a>
     </div>
-    <table class="w-full border border-border bg-white rounded-lg overflow-hidden">
+    <table class="w-full border border-gray-700 bg-gray-900 rounded-lg overflow-hidden">
       <thead>
-        <tr class="bg-blue-200">
+        <tr class="bg-gray-800">
           <th class="p-3 text-left">ID</th>
           <th class="p-3 text-left">Name</th>
           <th class="p-3 text-left">Student ID</th>

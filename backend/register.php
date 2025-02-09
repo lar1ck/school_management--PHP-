@@ -65,16 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class=" bg-gray-950  text-whitebg-gray-950 flex items-center justify-center min-h-screen">
 
-    <div class="bg-white shadow-md rounded-lg p-8 w-96">
+    <div class="bg-gray-900 shadow-md rounded-lg p-8 w-96">
         <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Register</h2>
 
         <form action="register.php" method="POST" class="space-y-4">
             <!-- Role Selection -->
             <div>
                 <label for="role" class="block text-gray-700 font-medium">Select Role:</label>
-                <select name="role" required class="w-full p-2 border border-gray-300 rounded">
+                <select name="role" required class="w-full p-2 border border-gray-700 bg-gray-800  text-white rounded">
                     <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>
                     <option value="student">Student</option>
@@ -85,14 +85,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div>
                 <label for="email" class="block text-gray-700 font-medium">ID:</label>
                 <input type="text" name="email" required placeholder="Enter your ID"
-                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    class="w-full p-2 border border-gray-700 bg-gray-800  text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
 
             <!-- Password -->
             <div>
                 <label for="password" class="block text-gray-700 font-medium">Password:</label>
                 <input type="password" name="password" required placeholder="Enter your password"
-                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    class="w-full p-2 border border-gray-700 bg-gray-800  text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
 
             <!-- Submit Button -->

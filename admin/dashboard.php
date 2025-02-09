@@ -18,7 +18,7 @@ $marks_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white">
     <?php include 'sidebar.php'; ?>
     <div class="max-w-6xl mx-auto p-4 rounded-lg ml-72">
         <h1 class="text-3xl font-semibold text-center mb-6">School Management Dashboard</h1>
@@ -29,7 +29,7 @@ $marks_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
                 <i class="bi bi-person-lines-fill text-3xl"></i>
                 <h2 class="text-xl font-semibold mt-2">Students</h2>
                 <p class="text-2xl font-bold"><?php echo $students_count; ?></p>
-                <a href="list_students.php" class="block mt-4 bg-white text-blue-500 px-4 py-2 rounded">View Students</a>
+                <a href="list_students.php" class="block mt-4 bg-gray-900 text-blue-500 px-4 py-2 rounded">View Students</a>
             </div>
 
             <!-- Teachers Card -->
@@ -37,7 +37,7 @@ $marks_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
                 <i class="bi bi-people-fill text-3xl"></i>
                 <h2 class="text-xl font-semibold mt-2">Teachers</h2>
                 <p class="text-2xl font-bold"><?php echo $teachers_count; ?></p>
-                <a href="list_teachers.php" class="block mt-4 bg-white text-green-500 px-4 py-2 rounded">View Teachers</a>
+                <a href="list_teachers.php" class="block mt-4 bg-gray-900 text-green-500 px-4 py-2 rounded">View Teachers</a>
             </div>
 
             <!-- Modules Card -->
@@ -45,7 +45,7 @@ $marks_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
                 <i class="bi bi-book-fill text-3xl"></i>
                 <h2 class="text-xl font-semibold mt-2">Modules</h2>
                 <p class="text-2xl font-bold"><?php echo $modules_count; ?></p>
-                <a href="list_modules.php" class="block mt-4 bg-white text-purple-500 px-4 py-2 rounded">View Modules</a>
+                <a href="list_modules.php" class="block mt-4 bg-gray-900 text-purple-500 px-4 py-2 rounded">View Modules</a>
             </div>
 
             <!-- Marks Card -->
@@ -53,7 +53,7 @@ $marks_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
                 <i class="bi bi-bar-chart-fill text-3xl"></i>
                 <h2 class="text-xl font-semibold mt-2">Marks</h2>
                 <p class="text-2xl font-bold"><?php echo $marks_count; ?></p>
-                <a href="list_marks.php" class="block mt-4 bg-white text-yellow-500 px-4 py-2 rounded">View Marks</a>
+                <a href="list_marks.php" class="block mt-4 bg-gray-900 text-yellow-500 px-4 py-2 rounded">View Marks</a>
             </div>
         </div>
     </div>

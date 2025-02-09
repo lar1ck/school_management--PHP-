@@ -7,7 +7,7 @@
     <title>List Teachers</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white p-4">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -19,12 +19,12 @@
     $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblteachers");
     ?>
     
-    <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="max-w-5xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold text-center mb-4">List of Teachers</h1>
         <a href="create_teacher.php" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Add Teacher</a>
-        <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="w-full bg-gray-900 shadow-md rounded-lg overflow-hidden">
             <thead>
-                <tr class="bg-gray-200">
+                <tr class="bg-gray-800">
                     <th class="p-3 text-left">ID</th>
                     <th class="p-3 text-left">Name</th>
                     <th class="p-3 text-left">Subject</th>
@@ -60,7 +60,7 @@
     <title>Edit Teacher</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white p-4">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -94,17 +94,17 @@
     }
     ?>
     
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold text-center mb-4">Edit Teacher</h1>
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>
-            <input type="text" name="name" value="<?php echo htmlspecialchars($teacher['name']); ?>" required class="w-full p-2 border rounded">
+            <input type="text" name="name" value="<?php echo htmlspecialchars($teacher['name']); ?>" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Subject</label>
-            <input type="text" name="subject" value="<?php echo htmlspecialchars($teacher['subject']); ?>" required class="w-full p-2 border rounded">
+            <input type="text" name="subject" value="<?php echo htmlspecialchars($teacher['subject']); ?>" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Username</label>
-            <input type="text" name="username" value="<?php echo htmlspecialchars($teacher['username']); ?>" required class="w-full p-2 border rounded">
+            <input type="text" name="username" value="<?php echo htmlspecialchars($teacher['username']); ?>" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Password (Leave empty to keep current password)</label>
-            <input type="password" name="password" class="w-full p-2 border rounded">
+            <input type="password" name="password" class="w-full p-2 border rounded bg-gray-800">
             <button type="submit" name="edit_teacher" class="bg-blue-500 text-white px-4 py-2 rounded">Update Teacher</button>
         </form>
     </div>
@@ -141,7 +141,7 @@ if (isset($_GET['id'])) {
     <title>List Teachers</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white p-4">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -153,12 +153,12 @@ if (isset($_GET['id'])) {
     $result = mysqli_query($happy_conn, "SELECT * FROM happy__tblteachers");
     ?>
     
-    <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="max-w-5xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold text-center mb-4">List of Teachers</h1>
         <a href="create_teacher.php" class="bg-blue-500 text-white px-4 py-2 rounded">Add Teacher</a>
-        <table class="w-full bg-white shadow-md rounded-lg overflow-hidden mt-4">
+        <table class="w-full bg-gray-900 shadow-md rounded-lg overflow-hidden mt-4">
             <thead>
-                <tr class="bg-gray-200">
+                <tr class="bg-gray-800">
                     <th class="p-3 text-left">ID</th>
                     <th class="p-3 text-left">Name</th>
                     <th class="p-3 text-left">Module</th>
@@ -194,7 +194,7 @@ if (isset($_GET['id'])) {
     <title>Add Teacher</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white p-4">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -219,13 +219,13 @@ if (isset($_GET['id'])) {
     }
     ?>
     
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold text-center mb-4">Add New Teacher</h1>
         <form method="POST" class="space-y-4">
             <label class="block">Name</label>
-            <input type="text" name="name" required class="w-full p-2 border rounded">
+            <input type="text" name="name" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Module</label>
-            <select name="subject" required class="w-full p-2 border rounded">
+            <select name="subject" required class="w-full p-2 border rounded bg-gray-800">
                 <option value="">Select Module</option>
                 <?php while ($module = mysqli_fetch_assoc($result_modules)) { ?>
                     <option value="<?php echo $module['module_name']; ?>">
@@ -234,9 +234,9 @@ if (isset($_GET['id'])) {
                 <?php } ?>
             </select>
             <label class="block">Username</label>
-            <input type="text" name="username" required class="w-full p-2 border rounded">
+            <input type="text" name="username" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Password</label>
-            <input type="password" name="password" required class="w-full p-2 border rounded">
+            <input type="password" name="password" required class="w-full p-2 border rounded bg-gray-800">
             <button type="submit" name="add_teacher" class="bg-blue-500 text-white px-4 py-2 rounded">Add Teacher</button>
         </form>
     </div>

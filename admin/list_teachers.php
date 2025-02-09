@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white">
     <?php
     session_start();
     $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
@@ -25,9 +25,9 @@
       <h1 class=" text-2xl font-semibold">Teachers List</h1>
       <a href="create_teacher.php" class="bg-blue-600 px-4 py-3 text-center text-sm font-semibold inline-block text-white cursor-pointer uppercase transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:scale-95">Add New Teacher</a>
     </div>
-        <table class="w-full bg-white rounded-lg overflow-hidden">
+        <table class="w-full bg-gray-900 rounded-lg overflow-hidden">
             <thead>
-                <tr class="bg-gray-200">
+                <tr class="bg-gray-800">
                     <th class="p-3 text-left">ID</th>
                     <th class="p-3 text-left">Name</th>
                     <th class="p-3 text-left">Module</th>

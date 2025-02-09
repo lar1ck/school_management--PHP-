@@ -1,6 +1,12 @@
 
 <?php
+session_start();
 $happy_conn = mysqli_connect("localhost", "root", "", "happy_db");
+if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+    header('Location: ../backend/login.php');
+    exit();
+}
+
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -34,18 +40,18 @@ if (isset($_POST['edit_module'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class=" bg-gray-950  text-whitebg-gray-950 text-white">
     <?php include 'sidebar.php'; ?>
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md  mr-32">
+    <div class="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-md  mr-32">
         <h1 class="text-2xl font-semibold text-center mb-4">Edit Module</h1>
         <form method="POST" class="space-y-4">
             <input type="hidden" name="id" value="<?php echo $module['id']; ?>">
             <label class="block">Module Name</label>
-            <input type="text" name="module_name" value="<?php echo $module['module_name']; ?>" required class="w-full p-2 border rounded">
+            <input type="text" name="module_name" value="<?php echo $module['module_name']; ?>" required class="w-full p-2 border rounded bg-gray-800">
             <label class="block">Description</label>
-            <textarea name="description" class="w-full p-2 border rounded"><?php echo $module['description']; ?></textarea>
+            <textarea name="description" class="w-full p-2 border rounded bg-gray-800"><?php echo $module['description']; ?></textarea>
             <label class="block">Parent Module</label>
-            <select name="parent_module_id" class="w-full p-2 border rounded">
+            <select name="parent_module_id" class="w-full p-2 border rounded bg-gray-800">
                 <option value="">-- Select Parent Module --</option>
                 <?php $modules = mysqli_query($happy_conn, "SELECT id, module_name FROM happy__tblmodules WHERE parent_module_id IS NULL AND id != {$module['id']}");
                 while ($parent = mysqli_fetch_assoc($modules)) {

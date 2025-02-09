@@ -25,9 +25,9 @@ $result = mysqli_query($happy_conn, $sql);
         .active { background-color: #4A90E2; color: white; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col items-center">
-    <nav class="bg-white shadow-md w-full p-4 flex justify-between items-center">
-        <h1 class="text-2xl font-semibold text-gray-800">Student Portal</h1>
+<body class=" bg-gray-950  text-whitebg-gray-50 min-h-screen flex flex-col items-center">
+    <nav class="bg-gray-900 shadow-md w-full p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-semibold text-white">Student Portal</h1>
         <div>
             <a href="?page=dashboard" class="nav-item px-4 py-2 rounded-md">Dashboard</a>
             <a href="?page=view_marks" class="nav-item px-4 py-2 rounded-md">View Marks</a>
@@ -37,16 +37,16 @@ $result = mysqli_query($happy_conn, $sql);
 
     <main class="w-full max-w-4xl p-6">
         <?php if (!isset($_GET['page']) || $_GET['page'] == 'dashboard') { ?>
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-gray-900 p-6 rounded-lg shadow-md">
                 <h2 class="text-3xl font-bold text-gray-700 mb-4">Welcome, Student!</h2>
                 <p class="text-gray-600">Access your marks and academic details here.</p>
             </div>
         <?php } elseif ($_GET['page'] == 'view_marks') { ?>
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-gray-900 p-6 rounded-lg shadow-md">
                 <h2 class="text-3xl font-bold text-gray-700 mb-4">Your Marks</h2>
                 <div class="overflow-hidden rounded-lg border border-gray-200">
-                    <table class="min-w-full bg-white">
-                        <thead class="bg-gray-100 border-b">
+                    <table class="min-w-full bg-gray-900">
+                        <thead class="bg-gray-950 border-b">
                             <tr>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Subject</th>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Marks</th>

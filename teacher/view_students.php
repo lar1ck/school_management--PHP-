@@ -67,7 +67,7 @@ if (isset($_POST['delete_marks'])) {
 ?>
 
 <h1 class="text-3xl font-bold text-white mb-6">Student List</h1>
-<table class="w-full bg-gray-700 border border-border rounded-lg overflow-hidden">
+<table class="w-full bg-gray-700 border border-gray-700 rounded-lg overflow-hidden">
   <thead>
     <tr class="bg-gray-800 text-white">
       <th class="py-3 px-4 text-left">Student Name</th>
@@ -92,7 +92,7 @@ if (isset($_POST['delete_marks'])) {
 <?php if ($student_info): ?>
   <div class="mt-6 rounded-lg  ">
     <h2 class="text-2xl font-semibold text-white mb-4 ">Marks for <?php echo htmlspecialchars($student_info['name']); ?></h2>
-    <table class="w-full bg-gray-700 border border-border rounded-lg overflow-hidden">
+    <table class="w-full bg-gray-700 border border-gray-700 rounded-lg overflow-hidden">
       <thead>
         <tr class="bg-gray-800 text-white">
           <th class="py-3 px-4 text-left">Subject</th>
@@ -130,7 +130,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'add_marks'):
       <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_info['student_id']); ?>">
       <p class="text-white"><strong>Subject:</strong> <?php echo htmlspecialchars($teacher_subject); ?></p>
       <label for="marks" class="block text-white">Marks:</label>
-      <input type="number" name="marks" id="marks" step="0.01" min="0" max="100" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-gray-800 text-white">
+      <input type="number" name="marks" id="marks" step="0.01" min="0" max="100" required class="w-full p-2 border border-gray-700 bg-gray-800  text-white rounded-lg focus:ring focus:ring-blue-300 bg-gray-800 text-white">
       <button type="submit" name="add_mark" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Submit Marks</button>
     </form>
   </div>
